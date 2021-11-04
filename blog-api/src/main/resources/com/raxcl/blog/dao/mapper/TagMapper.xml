@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--MyBatis配置文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raxcl.blog.dao.mapper.TagMapper">
+
+    <sql id ="all">
+        id,avatar,tag_name
+    </sql>
+
+    <select id="findTagByArticleId" resultType="com.raxcl.blog.dao.pojo.Tag">
+        select <include refid="all"></include>
+        from ms_tag
+        where id in (
+                select tag_id from ms_article_tag where article_id=#{articleId}
+            )
+    </select>
+
+    <select id="findHotsTagIds" resultType="java.lang.Long">
+        select tag_id
+        from ms_article_tag
+        group by tag_id
+        order by count(1) desc limit #{size}
+    </select>
+
+    <select id="findTagsByTagIds" resultType="com.raxcl.blog.dao.pojo.Tag">
+        select <include refid="all"></include>
+        from ms_tag
+        where id in
+        <foreach collection="tagIds" item="tagId" separator="," open="(" close=")">
+            #{tagId}
+        </foreach>
+
+    </select>
+
+</mapper>
