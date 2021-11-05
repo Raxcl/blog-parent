@@ -1,4 +1,4 @@
-package com.raxcl.blog.api;
+package com.raxcl.blog.controller;
 
 import com.raxcl.blog.service.ArticleService;
 import com.raxcl.blog.vo.param.PageParams;
