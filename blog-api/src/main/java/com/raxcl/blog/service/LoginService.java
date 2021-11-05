@@ -1,5 +1,6 @@
 package com.raxcl.blog.service;
 
+import com.raxcl.blog.dao.pojo.SysUser;
 import com.raxcl.blog.vo.Result;
 import com.raxcl.blog.vo.param.LoginParam;
 
@@ -14,4 +15,6 @@ public interface LoginService {
     Result logout(String token);
 
     Result register(LoginParam loginParam);
+
+    SysUser checkToken(String token);
 }
