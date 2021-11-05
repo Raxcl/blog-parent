@@ -10,4 +10,6 @@ public interface LoginService {
      * @return
      */
     Result login(LoginParam loginParam);
+
+    Result logout(String token);
 }
