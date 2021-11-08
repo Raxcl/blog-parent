@@ -3,11 +3,14 @@ package com.raxcl.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.raxcl.blog.dao.mapper.CommentMapper;
 import com.raxcl.blog.dao.pojo.Comment;
+import com.raxcl.blog.dao.pojo.SysUser;
 import com.raxcl.blog.service.CommentsService;
 import com.raxcl.blog.service.SysUserService;
+import com.raxcl.blog.utils.UserThreadLocal;
 import com.raxcl.blog.vo.CommentVo;
 import com.raxcl.blog.vo.Result;
 import com.raxcl.blog.vo.UserVo;
+import com.raxcl.blog.vo.param.CommentParam;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,8 @@ public class CommentsServiceImpl implements CommentsService {
         List<Comment> comments = commentMapper.selectList(queryWrapper);
         return Result.success(copyList(comments));
     }
+
+
 
     private List<CommentVo> copyList(List<Comment> commentList) {
         List<CommentVo> commentVoList = new ArrayList<>();
@@ -70,5 +75,25 @@ public class CommentsServiceImpl implements CommentsService {
         return copyList(comments);
     }
 
+    @Override
+    public Result comment(CommentParam commentParam) {
+        SysUser sysUser = UserThreadLocal.get();
+        Comment comment = new Comment();
+        comment.setArticleId(commentParam.getArticleId());
+        comment.setAuthorId(sysUser.getId());
+        comment.setContent(commentParam.getContent());
+        comment.setCreateDate(System.currentTimeMillis());
+        Long parent = commentParam.getParent();
+        if (parent == null || parent == 0){
+            comment.setLevel(1);
+        }else {
+            comment.setLevel(2);
+        }
+        comment.setParentId(parent == null ? 0 : parent);
+        Long toUserId = commentParam.getToUserId();
+        comment.setToUid(toUserId == null ?0 : toUserId);
+        this.commentMapper.insert(comment);
+        return Result.success(null);
+    }
 
 }

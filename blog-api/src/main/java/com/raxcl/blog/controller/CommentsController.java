@@ -2,10 +2,10 @@ package com.raxcl.blog.controller;
 
 import com.raxcl.blog.service.CommentsService;
 import com.raxcl.blog.vo.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.raxcl.blog.vo.param.CommentParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.ResultSet;
 
 @RestController
 @RequestMapping("comments")
@@ -19,5 +19,10 @@ public class CommentsController {
     @GetMapping("article/{id}")
     public Result comments(@PathVariable("id") Long articleId){
         return commentsService.commentsByArticleId(articleId);
+    }
+
+    @PostMapping("create/change")
+    public Result comment(@RequestBody CommentParam commentParam){
+        return commentsService.comment(commentParam);
     }
 }
