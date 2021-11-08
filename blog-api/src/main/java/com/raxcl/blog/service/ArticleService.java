@@ -1,6 +1,7 @@
 package com.raxcl.blog.service;
 
 import com.raxcl.blog.vo.ArticleVo;
+import com.raxcl.blog.vo.param.ArticleParam;
 import com.raxcl.blog.vo.param.PageParams;
 import com.raxcl.blog.vo.Result;
 
@@ -20,4 +21,11 @@ public interface ArticleService {
     Result listArchives();
 
     ArticleVo findArticleById(Long id);
+
+    /**
+     * 文章发布
+     * @param articleParam
+     * @return
+     */
+    Result publish(ArticleParam articleParam);
 }
