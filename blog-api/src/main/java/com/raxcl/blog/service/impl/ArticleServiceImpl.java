@@ -3,17 +3,20 @@ package com.raxcl.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.raxcl.blog.dao.dto.Archives;
+import com.raxcl.blog.dao.mapper.ArticleBodyMapper;
 import com.raxcl.blog.dao.mapper.ArticleMapper;
 import com.raxcl.blog.dao.pojo.Article;
+import com.raxcl.blog.dao.pojo.ArticleBody;
 import com.raxcl.blog.service.ArticleService;
+import com.raxcl.blog.service.CategoryService;
 import com.raxcl.blog.service.SysUserService;
 import com.raxcl.blog.service.TagService;
+import com.raxcl.blog.vo.ArticleBodyVo;
 import com.raxcl.blog.vo.ArticleVo;
 import com.raxcl.blog.vo.param.PageParams;
 import com.raxcl.blog.vo.Result;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,11 +28,15 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleMapper articleMapper;
     private final TagService tagService;
     private final SysUserService sysUserService;
+    private final ArticleBodyMapper articleBodyMapper;
+    private final CategoryService categoryService;
 
-    public ArticleServiceImpl(ArticleMapper articleMapper, TagService tagService, SysUserService sysUserService) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, TagService tagService, SysUserService sysUserService, ArticleBodyMapper articleBodyMapper, CategoryService categoryService) {
         this.articleMapper = articleMapper;
         this.tagService = tagService;
         this.sysUserService = sysUserService;
+        this.articleBodyMapper = articleBodyMapper;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -53,12 +60,20 @@ public class ArticleServiceImpl implements ArticleService {
     private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor) {
         List<ArticleVo> articleVoList = new ArrayList<>();
         for (Article record : records){
-            articleVoList.add(copy(record,isTag, isAuthor));
+            articleVoList.add(copy(record,isTag, isAuthor,false,false));
         }
         return  articleVoList;
     }
 
-    private ArticleVo copy(Article article, boolean isTag, boolean isAuthor) {
+    private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor, boolean isBody, boolean isCategory) {
+        List<ArticleVo> articleVoList = new ArrayList<>();
+        for (Article record : records){
+            articleVoList.add(copy(record,isTag, isAuthor, isBody, isCategory));
+        }
+        return  articleVoList;
+    }
+
+    private ArticleVo copy(Article article, boolean isTag, boolean isAuthor, boolean isBody, boolean isCategory) {
         ArticleVo articleVo = new ArticleVo();
         BeanUtils.copyProperties(article, articleVo);
         articleVo.setCreateDate(new DateTime(article.getCreateDate()).toString("yyyy-MM-dd HH:mm"));
@@ -68,8 +83,18 @@ public class ArticleServiceImpl implements ArticleService {
         if (isAuthor){
             articleVo.setAuthor(sysUserService.findUserById(article.getId()).getNickname());
         }
+        if (isBody){
+            Long bodyId = article.getBodyId();
+            articleVo.setBody(findArticleBodyById(bodyId));
+        }
+        if (isCategory){
+            Long categoryId = article.getCategoryId();
+            articleVo.setCategory(categoryService.findCategoryById(categoryId));
+        }
         return articleVo;
     }
+
+
 
     @Override
     public Result hotArticle(int limit) {
@@ -95,6 +120,19 @@ public class ArticleServiceImpl implements ArticleService {
     public Result listArchives() {
         List<Archives> archivesList = articleMapper.listArchives();
         return Result.success(archivesList);
+    }
+
+    @Override
+    public ArticleVo findArticleById(Long id) {
+        Article article = articleMapper.selectById(id);
+        return copy(article, true, true, true,true);
+    }
+
+    private ArticleBodyVo findArticleBodyById(Long bodyId) {
+        ArticleBody articleBody = articleBodyMapper.selectById(bodyId);
+        ArticleBodyVo articleBodyVo = new ArticleBodyVo();
+        articleBodyVo.setContent(articleBody.getContent());
+        return articleBodyVo;
     }
 
 }

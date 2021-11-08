@@ -1,12 +1,13 @@
 package com.raxcl.blog.controller;
 
+import com.raxcl.blog.dao.pojo.Article;
 import com.raxcl.blog.service.ArticleService;
+import com.raxcl.blog.vo.ArticleVo;
 import com.raxcl.blog.vo.param.PageParams;
 import com.raxcl.blog.vo.Result;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.ResultSet;
 
 @RestController
 @RequestMapping("articles")
@@ -51,6 +52,13 @@ public class ArticleController {
      */
     @PostMapping("listArchives")
     public Result listArchives(){
+
         return articleService.listArchives();
+    }
+
+    @PostMapping("view/{id}")
+    public Result findArticleById(@PathVariable("id") Long id){
+        ArticleVo articleVo = articleService.findArticleById(id);
+        return Result.success(articleVo);
     }
 }

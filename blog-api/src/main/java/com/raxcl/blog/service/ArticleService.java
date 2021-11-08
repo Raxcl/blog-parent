@@ -1,5 +1,6 @@
 package com.raxcl.blog.service;
 
+import com.raxcl.blog.vo.ArticleVo;
 import com.raxcl.blog.vo.param.PageParams;
 import com.raxcl.blog.vo.Result;
 
@@ -17,4 +18,6 @@ public interface ArticleService {
     Result newArticle(int limit);
 
     Result listArchives();
+
+    ArticleVo findArticleById(Long id);
 }
