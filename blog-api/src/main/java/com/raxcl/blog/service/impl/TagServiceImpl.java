@@ -1,8 +1,10 @@
 package com.raxcl.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.raxcl.blog.dao.mapper.TagMapper;
 import com.raxcl.blog.dao.pojo.Tag;
 import com.raxcl.blog.service.TagService;
+import com.raxcl.blog.vo.Result;
 import com.raxcl.blog.vo.TagVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -50,5 +52,11 @@ public class TagServiceImpl implements TagService {
         }
         List<Tag> tagList = tagMapper.findTagsByTagIds(hotsTagIds);
         return copyList(tagList);
+    }
+
+    @Override
+    public Result findAll() {
+        List<Tag> tags = this.tagMapper.selectList((new LambdaQueryWrapper<>()));
+        return Result.success(copyList(tags));
     }
 }
