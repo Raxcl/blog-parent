@@ -10,7 +10,9 @@ import com.raxcl.blog.utils.JWTUtils;
 import com.raxcl.blog.vo.ErrorCode;
 import com.raxcl.blog.vo.LoginUserVo;
 import com.raxcl.blog.vo.Result;
+import com.raxcl.blog.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +83,18 @@ public class SysUserServiceImpl implements SysUserService {
     public void save(SysUser sysUser) {
         //注意 默认生成的id是分布式id 采用了雪花算法
         this.sysUserMapper.insert(sysUser);
+    }
+
+    @Override
+    public UserVo findUserVoById(Long id) {
+        SysUser sysUser = sysUserMapper.selectById(id);
+        if(sysUser == null){
+            sysUser = new SysUser();
+            sysUser.setNickname("raxcl");
+        }
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(sysUser,userVo);
+        return userVo;
     }
 
 
