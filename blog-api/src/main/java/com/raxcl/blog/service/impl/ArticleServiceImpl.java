@@ -7,10 +7,7 @@ import com.raxcl.blog.dao.mapper.ArticleBodyMapper;
 import com.raxcl.blog.dao.mapper.ArticleMapper;
 import com.raxcl.blog.dao.pojo.Article;
 import com.raxcl.blog.dao.pojo.ArticleBody;
-import com.raxcl.blog.service.ArticleService;
-import com.raxcl.blog.service.CategoryService;
-import com.raxcl.blog.service.SysUserService;
-import com.raxcl.blog.service.TagService;
+import com.raxcl.blog.service.*;
 import com.raxcl.blog.vo.ArticleBodyVo;
 import com.raxcl.blog.vo.ArticleVo;
 import com.raxcl.blog.vo.param.PageParams;
@@ -30,13 +27,15 @@ public class ArticleServiceImpl implements ArticleService {
     private final SysUserService sysUserService;
     private final ArticleBodyMapper articleBodyMapper;
     private final CategoryService categoryService;
+    private final ThreadService threadService;
 
-    public ArticleServiceImpl(ArticleMapper articleMapper, TagService tagService, SysUserService sysUserService, ArticleBodyMapper articleBodyMapper, CategoryService categoryService) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, TagService tagService, SysUserService sysUserService, ArticleBodyMapper articleBodyMapper, CategoryService categoryService, ThreadService threadService) {
         this.articleMapper = articleMapper;
         this.tagService = tagService;
         this.sysUserService = sysUserService;
         this.articleBodyMapper = articleBodyMapper;
         this.categoryService = categoryService;
+        this.threadService = threadService;
     }
 
     @Override
@@ -125,7 +124,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleVo findArticleById(Long id) {
         Article article = articleMapper.selectById(id);
-        return copy(article, true, true, true,true);
+        ArticleVo articleVo = copy(article, true, true, true, true);
+        //查询文章之后，更新阅读数
+        //采用线程池
+        threadService.updateArticleViewCount(articleMapper,article);
+        return articleVo;
     }
 
     private ArticleBodyVo findArticleBodyById(Long bodyId) {

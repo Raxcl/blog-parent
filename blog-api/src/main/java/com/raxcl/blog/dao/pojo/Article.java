@@ -14,7 +14,7 @@ public class Article {
     /**
      *评论数量
      */
-    private int commentCounts;
+    private Integer commentCounts;
 
     /**
      * 创建时间
@@ -34,12 +34,12 @@ public class Article {
     /**
      * 浏览数量
      */
-    private  int viewCounts;
+    private  Integer viewCounts;
 
     /**
      * 是否置顶
      */
-    private int weight;
+    private Integer weight;
 
     /**
      * 作者id

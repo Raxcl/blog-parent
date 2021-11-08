@@ -21,17 +21,17 @@ public class ArticleVo {
     /**
      *评论数量
      */
-    private int commentCounts;
+    private Integer commentCounts;
 
     /**
      * 浏览数量
      */
-    private  int viewCounts;
+    private  Integer viewCounts;
 
     /**
      * 是否置顶
      */
-    private int weight;
+    private Integer weight;
 
     /**
      * 创建时间
@@ -65,5 +65,5 @@ public class ArticleVo {
     /**
      * 类别id
      */
-    private int categoryId;
+    private Integer categoryId;
 }
