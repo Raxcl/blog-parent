@@ -7,4 +7,6 @@ public class TagVo {
     private Long id;
 
     private String tagName;
+
+    private String avatar;
 }

@@ -9,4 +9,6 @@ public interface CategoryService {
     CategoryVo findCategoryById(Long categoryId);
 
     Result findAll();
+
+    Result findAllDetail();
 }
