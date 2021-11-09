@@ -1,5 +1,6 @@
 package com.raxcl.blog.controller;
 
+import com.raxcl.blog.common.aop.LogAnnotation;
 import com.raxcl.blog.dao.pojo.Article;
 import com.raxcl.blog.service.ArticleService;
 import com.raxcl.blog.vo.ArticleVo;
@@ -21,9 +22,15 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    //Result是统一结果返回(VO类)
+    /**
+     * 首页 文章列表
+     * @param pageParams
+     * @return
+     */
     @PostMapping
-    public Result articles(@RequestBody PageParams pageParams){
+    //加上此注解 代表要对此接口记录日志
+    @LogAnnotation(module = "文章" , operator = "获取文章列表")
+    public Result listArticle(@RequestBody PageParams pageParams){
         return articleService.listArticle(pageParams);
     }
 
