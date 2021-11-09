@@ -20,7 +20,7 @@ public class TagsController {
     }
 
 
-    @GetMapping("/hot")
+    @GetMapping("hot")
     public Result listHotTags() {
         int limit = 6;
         List<TagVo> tagVoList = tagService.hot(limit);
@@ -32,7 +32,7 @@ public class TagsController {
         return tagService.findAll();
     }
 
-    @GetMapping("/detail")
+    @GetMapping("detail")
     public Result findAllDetail(){
         return tagService.findAllDetail();
     }

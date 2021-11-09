@@ -3,6 +3,7 @@ package com.raxcl.blog.controller;
 import com.raxcl.blog.service.CategoryService;
 import com.raxcl.blog.vo.Result;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,13 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
-    @GetMapping("/detail")
+    @GetMapping("detail")
     public Result categoriesDetail() {
         return categoryService.findAllDetail();
+    }
+
+    @GetMapping("detail/{id}")
+    public Result categoriesDetailById(@PathVariable("id") Long id){
+        return categoryService.categoriesDetailById(id);
     }
 }

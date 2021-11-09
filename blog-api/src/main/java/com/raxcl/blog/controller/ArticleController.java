@@ -1,15 +1,12 @@
 package com.raxcl.blog.controller;
 
 import com.raxcl.blog.common.aop.LogAnnotation;
-import com.raxcl.blog.dao.pojo.Article;
 import com.raxcl.blog.service.ArticleService;
 import com.raxcl.blog.vo.ArticleVo;
+import com.raxcl.blog.vo.Result;
 import com.raxcl.blog.vo.param.ArticleParam;
 import com.raxcl.blog.vo.param.PageParams;
-import com.raxcl.blog.vo.Result;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.ResultSet;
 
 @RestController
 @RequestMapping("articles")
