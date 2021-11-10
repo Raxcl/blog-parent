@@ -1,6 +1,7 @@
 package com.raxcl.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.raxcl.blog.dao.dto.Archives;
 import com.raxcl.blog.dao.mapper.ArticleBodyMapper;
@@ -47,11 +48,11 @@ public class ArticleServiceImpl implements ArticleService {
         this.articleTagMapper = articleTagMapper;
     }
 
-    @Override
+    /*@Override
     public Result listArticle(PageParams pageParams) {
-        /**
+        *//**
          * 1. 分页查询 article数据库表
-         */
+         *//*
         Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getPageSize());
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         if (pageParams.getCategoryId() != null){
@@ -81,6 +82,14 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> records = articlePage.getRecords();
         List<ArticleVo> articleVoList = copyList(records, true, true);
         return Result.success(articleVoList);
+    }*/
+
+    @Override
+    public Result listArticle(PageParams pageParams) {
+        Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getPageSize());
+        IPage<Article> articleIPage = this.articleMapper.listArchive(page,pageParams.getCategoryId(),
+                pageParams.getTagId(),pageParams.getYear(),pageParams.getMonth());
+        return Result.success(copyList(articleIPage.getRecords(),true,true));
     }
 
 
