@@ -26,6 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryMapper.selectById(categoryId);
         CategoryVo categoryVo = new CategoryVo();
         BeanUtils.copyProperties(category, categoryVo);
+        categoryVo.setId(String.valueOf(category.getId()));
         return categoryVo;
     }
 
@@ -63,6 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryVo copy(Category category) {
         CategoryVo categoryVo = new CategoryVo();
         BeanUtils.copyProperties(category, categoryVo);
+        categoryVo.setId(String.valueOf(category.getId()));
         return categoryVo;
     }
 }

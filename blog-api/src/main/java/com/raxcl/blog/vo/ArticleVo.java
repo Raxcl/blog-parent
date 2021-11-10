@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 public class ArticleVo {
     //一定要记得加 否则会出现精度损失
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+//    @JsonSerialize(using = ToStringSerializer.class)  后续：改为String类型
+    private String id;
 
     /**
      * 标题
