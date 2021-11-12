@@ -18,7 +18,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         //跨域配置
-        registry.addMapping("/**").allowedOrigins("http://localhost:8080");
+        //TODO 改成服务器域名 或者ip地址
+        registry.addMapping("/**").allowedOrigins("http://81.71.87.241:8080");
     }
 
     @Override
@@ -29,6 +30,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addPathPatterns("/comments/create/change")
                 .addPathPatterns("/articles/publish");
     }
-
+    
 
 }
