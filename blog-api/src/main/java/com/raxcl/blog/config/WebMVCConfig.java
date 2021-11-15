@@ -20,7 +20,16 @@ public class WebMVCConfig implements WebMvcConfigurer {
         //跨域配置
         //TODO 等域名备案成功后修改为域名访问
         //通过ip访问不能走443端口
-        registry.addMapping("/**").allowedOrigins("http://81.71.87.241:8080");
+        //如果配置了自定义拦截器，这种跨域配置会失效，所以采用第二种
+        //跨域配置一
+//      registry.addMapping("/**").allowedOrigins("http://81.71.87.241:8080","http://81.71.87.241:80","http://81.71.87.241:8888")
+        //跨域配置二
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true)
+                .maxAge(3600)
+                .allowedHeaders("*");
     }
 
     @Override
