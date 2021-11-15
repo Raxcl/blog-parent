@@ -18,7 +18,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         //跨域配置
-        //TODO 改成服务器域名 或者ip地址
+        //TODO 等域名备案成功后修改为域名访问
+        //通过ip访问不能走443端口
         registry.addMapping("/**").allowedOrigins("http://81.71.87.241:8080");
     }
 
