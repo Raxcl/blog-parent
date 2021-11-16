@@ -10,22 +10,22 @@
 
     <select id="findTagByArticleId" resultType="com.raxcl.blog.dao.pojo.Tag">
         select <include refid="all"></include>
-        from ms_tag
+        from tag
         where id in (
-                select tag_id from ms_article_tag where article_id=#{articleId}
+                select tag_id from article_tag where article_id=#{articleId}
             )
     </select>
 
     <select id="findHotsTagIds" resultType="java.lang.Long">
         select tag_id
-        from ms_article_tag
+        from article_tag
         group by tag_id
         order by count(1) desc limit #{size}
     </select>
 
     <select id="findTagsByTagIds" resultType="com.raxcl.blog.dao.pojo.Tag">
         select <include refid="all"></include>
-        from ms_tag
+        from tag
         where id in
         <foreach collection="tagIds" item="tagId" separator="," open="(" close=")">
             #{tagId}

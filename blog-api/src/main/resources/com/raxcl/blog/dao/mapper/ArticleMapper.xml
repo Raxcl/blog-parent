@@ -5,11 +5,11 @@
 
     <select id="listArchives" resultType="com.raxcl.blog.dao.dto.Archives">
         select from_unixtime(create_date/1000,'%Y') year, from_unixtime(create_date/1000,'%m') month, count(*) count
-        from ms_article
+        from article
         group by year, month
     </select>
     <select id="listArchive" resultType="com.raxcl.blog.dao.pojo.Article">
-        select * from ms_article
+        select * from article
         <where>
             <if test="categoryId != null">
                 and category_id = #{categoryId}
@@ -18,7 +18,7 @@
                 and (from_unixtime(create_date/1000,'%Y') = #{year} and from_unixtime(create_date/1000,'%m') = #{month} )
             </if>
             <if test="tagId != null">
-                and id in (select article_id from ms_article_tag where tag_id=#{tagId})
+                and id in (select article_id from article_tag where tag_id=#{tagId})
             </if>
         </where>
         order by create_date desc
